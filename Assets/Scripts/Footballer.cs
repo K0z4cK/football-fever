@@ -1,7 +1,6 @@
-using System.Collections;
+using System;
+using System.Linq;
 using System.Collections.Generic;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
-using UnityEngine;
 
 public enum StatType {Strength, Speed, Endurance, Accuracy, Teaming};
 
@@ -14,13 +13,15 @@ public class Footballer
     public FootballerStats Stats => _stats;
 
     private int _points;
+    public int Points => _points;
 
-    private float _rating;
-    public float Rating => _rating; 
+    public float Rating => (_stats.strength + _stats.speed + _stats.endurance + _stats.accuracy + _stats.teaming) / 5f;
 
-    public Footballer(string name)
+    public int SumOfPoints => _stats.strength + _stats.speed + _stats.endurance + _stats.accuracy + _stats.teaming;
+
+    public Footballer()
     {
-        _name = name;
+        _name = NamesCollection.GetRandomName();
 
         _stats = new FootballerStats()
         {
@@ -31,38 +32,50 @@ public class Footballer
             teaming = 1
         };
         _points = 7;
-        _rating = 1;
+        //_rating = 1;
     }
 
     public void SetStatsRandom()
     {
+        Random rnd = new Random();
+
         _points = 0;
         int randomPoints = 10;
-        int nextPoints = Random.Range(0, randomPoints + 1);
-        randomPoints -= nextPoints;
-        _stats.strength += nextPoints;
 
-        nextPoints = Random.Range(0, randomPoints + 1);
-        randomPoints -= nextPoints;
-        _stats.speed += nextPoints;
+        var types = Enum.GetValues(typeof(StatType)).Cast<StatType>().ToList();
+        types.Shuffle();
 
-        nextPoints = Random.Range(0, randomPoints + 1);
-        randomPoints -= nextPoints;
-        _stats.endurance += nextPoints;
-
-        nextPoints = Random.Range(0, randomPoints + 1);
-        randomPoints -= nextPoints;
-        _stats.accuracy += nextPoints;
-
-        nextPoints = Random.Range(0, randomPoints + 1);
-        randomPoints -= nextPoints;
-        _stats.teaming += nextPoints;
-
-        _rating = GetStatsResult();
+        foreach (var type in types)
+        {
+            int nextPoints = rnd.Next(randomPoints + 1);
+            switch (type)
+            {
+                case StatType.Strength:
+                    _stats.strength += nextPoints;
+                    break;
+                case StatType.Speed:
+                    _stats.speed += nextPoints;
+                    break;
+                case StatType.Endurance:
+                    _stats.endurance += nextPoints;
+                    break;
+                case StatType.Accuracy:
+                    _stats.accuracy += nextPoints;
+                    break;
+                case StatType.Teaming:
+                    _stats.teaming += nextPoints;
+                    break;
+            }
+            randomPoints -= nextPoints;
+        }
+        //_rating = GetStatsResult();
     }
 
     public void IncreaseStat(StatType type)
     {
+        if (_points == 0)
+            return;
+
         switch (type)
         {
             case StatType.Strength:
@@ -81,6 +94,8 @@ public class Footballer
                 _stats.teaming += 1;
                 break;
         }
+        _points--;
+        //_rating = GetStatsResult();
     }
 
     private StatType GetBestStat()

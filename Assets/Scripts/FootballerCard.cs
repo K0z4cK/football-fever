@@ -2,11 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class FootballerCard : MonoBehaviour
 {
+    private UnityAction<Footballer> onShowFootballerPanel;
+    private UnityAction<FootballerCard> onDestroy;
+
+
     private Footballer _footballer;
 
     [Header("Face Info")]
@@ -65,23 +72,56 @@ public class FootballerCard : MonoBehaviour
 
     private Transform _transform;
     private Transform _parent;
+    private Transform _dragParent;
+
     private Button _button;
 
+    [Header("Dragger")]
+    [SerializeField]
+    private DragAndDropHandler _dragger;
+
+    private List<BattleCard> _dragTargets = new List<BattleCard>();
+
+    /*[SerializeField]
+    private Dragger _dragger;*/
+
+    //private bool _isMiniMode = true;
+    private GameState _gameMode;
+
+    private bool _canShowInfo = true;
     private bool _isShowFoolInfo = false;
 
     private float _screenWidth;
 
-    public void Init(Footballer footballer)
+    public void Init(UnityAction<Footballer> showFootballerPanel, UnityAction<FootballerCard> destroy, Footballer footballer)
     {
-        _screenWidth = Screen.width;
+        //_dragger = GetComponent<Dragger>();
+
+        _dragger.OnReleasedObject += Dragger_OnReleasedObject;
+        _dragger.OnGrabbedObject += Dragger_OnGrabbedObject;
+
+       _screenWidth = Screen.width;
 
         _fullInfoLeft.SetActive(false);
         _fullInfoRight.SetActive(false);
         _button = GetComponent<Button>();
         _transform = transform;
         _parent = transform.parent;
+        _dragParent = _parent.parent.parent.parent;
 
         _footballer = footballer;
+        UpdateInfo();
+
+        _button.onClick.AddListener(OnButtonClick);
+
+        onShowFootballerPanel = showFootballerPanel;
+        onDestroy = destroy;
+
+        _gameMode = GameState.Menu;
+    }
+
+    public void UpdateInfo()
+    {
         _faceName.text = _footballer.Name;
         _fullNameLeft.text = _footballer.Name;
         _fullNameRight.text = _footballer.Name;
@@ -99,25 +139,108 @@ public class FootballerCard : MonoBehaviour
         _ratingFace.text = _footballer.Rating.ToString();
         _ratingHidenLeft.text = _footballer.Rating.ToString();
         _ratingHidenRight.text = _footballer.Rating.ToString();
-
-        _button.onClick.AddListener(OnButtonClick);
     }
 
     private void OnButtonClick()
     {
+        if (!_canShowInfo)
+        {
+            _canShowInfo = true;
+            return;
+        }
+
+        if (_gameMode == GameState.Team)
+        {
+            onShowFootballerPanel?.Invoke(_footballer);
+            return;
+        }
+
         GameObject fullInfoPanel = _fullInfoLeft;
 
         if (_transform.localPosition.x > Screen.width / 1.2f)
             fullInfoPanel = _fullInfoRight;
 
         if (_faceInfo.activeSelf)
-            fullInfoPanel.transform.parent = _parent.parent;
+            fullInfoPanel.transform.SetParent(_parent.parent, true);
         else
-            fullInfoPanel.transform.parent = _transform;
+            fullInfoPanel.transform.SetParent(_transform, true);
 
         _isShowFoolInfo = !_isShowFoolInfo;
         _faceInfo.SetActive(!_isShowFoolInfo);
         fullInfoPanel.SetActive(_isShowFoolInfo);
+
+        StartCoroutine(InfoFolow(fullInfoPanel));
+        
     }
 
+    private IEnumerator InfoFolow(GameObject infoPanel)
+    {
+        while (_isShowFoolInfo)
+        {
+            infoPanel.transform.position = new Vector3(infoPanel.transform.position.x, _transform.position.y, infoPanel.transform.position.z);
+            yield return null;
+        }
+    }
+
+    public void HideInfo()
+    {
+        _isShowFoolInfo = false;
+        _faceInfo.SetActive(true);
+        _fullInfoLeft.SetActive(false);
+        _fullInfoRight.SetActive(false);
+    }
+
+    public void SetMode(GameState mode)
+    {
+        _gameMode = mode;
+        HideInfo();
+        if (_gameMode == GameState.Game)
+            _dragger.SetDraggable(true);
+        else
+            _dragger.SetDraggable(false);
+
+    }
+
+    public void SetDragTargets(List<BattleCard> targets)
+    {
+        _dragTargets = targets;
+    }
+
+    private void Dragger_OnReleasedObject(Vector3 releasedPosition)
+    {
+        foreach (var target in _dragTargets)
+        {
+            if(Vector3.Distance(releasedPosition, target.transform.position) < 100f)
+            {
+                target.SetFootballer(_footballer);
+                onDestroy?.Invoke(this);
+                /*_transform.SetParent(target, false);
+                _transform.position = target.position;
+                _dragTargets.Remove(target);*/
+                return;
+            }
+        }
+
+        _transform.SetParent(_parent, false);
+    }
+
+    private void Dragger_OnGrabbedObject()
+    {
+        _canShowInfo = false;
+        _transform.SetParent(_dragParent);
+    }
+
+    /*public void SetMiniMode(bool mode)
+    {
+        _isMiniMode = mode;
+        if (!_isMiniMode)       
+            HideInfo();
+        
+    }*/
+
+    /*private void OnDestroy()
+    {
+        _dragger.OnReleasedObject -= Dragger_OnReleasedObject;
+        _dragger.OnGrabbedObject -= Dragger_OnGrabbedObject;
+    }*/
 }

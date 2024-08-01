@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public static class NamesCollection
 {
    public static readonly string[] Names =
@@ -260,7 +256,7 @@ public static class NamesCollection
 
     public static string GetRandomName()
     {
-        int index = Random.Range(0, Names.Length + 1);
+        int index = RandomTools.Random.Next(Names.Length + 1);
         return Names[index];
     }
 }

@@ -1233,6 +1233,7 @@ GameObject:
   - component: {fileID: 5490476374259497987}
   - component: {fileID: 6694566239800613273}
   - component: {fileID: 4932768524811191103}
+  - component: {fileID: 8529725611846248505}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -1356,6 +1357,20 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &8529725611846248505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2007765460230453937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 2
+  m_VerticalFit: 0
 --- !u!1 &2102883326907795901
 GameObject:
   m_ObjectHideFlags: 0
@@ -2847,7 +2862,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 4
   m_Spacing: 21.5
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
@@ -3487,7 +3502,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 4
   m_Spacing: 21.5
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
@@ -3507,6 +3522,7 @@ GameObject:
   - component: {fileID: 367020487291143595}
   - component: {fileID: 8163022744930954316}
   - component: {fileID: 7457700083281410351}
+  - component: {fileID: 7900314576113811192}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -3530,8 +3546,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 199.67, y: 100}
+  m_AnchoredPosition: {x: 212.26001, y: 0}
+  m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8163022744930954316
 CanvasRenderer:
@@ -3630,6 +3646,20 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &7900314576113811192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5530122744060583078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 2
+  m_VerticalFit: 0
 --- !u!1 &5754401731751505164
 GameObject:
   m_ObjectHideFlags: 0
@@ -4385,6 +4415,7 @@ GameObject:
   - component: {fileID: 6734989595065055970}
   - component: {fileID: 3300175474035710031}
   - component: {fileID: 3216117637729686639}
+  - component: {fileID: 6293837015326556437}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -4408,8 +4439,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 199.67, y: 100}
+  m_AnchoredPosition: {x: 212.26001, y: 0}
+  m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3300175474035710031
 CanvasRenderer:
@@ -4508,6 +4539,20 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &6293837015326556437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8279450259347963973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 2
+  m_VerticalFit: 0
 --- !u!1 &8482240413436254114
 GameObject:
   m_ObjectHideFlags: 0
@@ -4558,6 +4603,7 @@ GameObject:
   - component: {fileID: 7431610995532560184}
   - component: {fileID: 2787812805919968786}
   - component: {fileID: 7798618841318117698}
+  - component: {fileID: 6782786561862352944}
   m_Layer: 5
   m_Name: FootballerCard
   m_TagString: Untagged
@@ -4659,6 +4705,7 @@ MonoBehaviour:
   _accuracyRight: {fileID: 7080732405232478654}
   _teamingRight: {fileID: 4198160542144603430}
   _ratingHidenRight: {fileID: 7457700083281410351}
+  _dragger: {fileID: 6782786561862352944}
 --- !u!114 &7798618841318117698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4703,6 +4750,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6782786561862352944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8566162188368985783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecd108d9f73c77644bef03374c21d994, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeToWait: 0.3
 --- !u!1 &8669046809674062701
 GameObject:
   m_ObjectHideFlags: 0
