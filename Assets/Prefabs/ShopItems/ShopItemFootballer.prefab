@@ -155,7 +155,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 308.16, y: 14.7412}
+  m_AnchoredPosition: {x: 308.16, y: 45.3}
   m_SizeDelta: {x: 802.32, y: 190.5181}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2289112509150918285
@@ -267,8 +267,9 @@ GameObject:
   - component: {fileID: 8081119174205325863}
   - component: {fileID: 6211382463524727557}
   - component: {fileID: 3006469063626943173}
+  - component: {fileID: 6090782638371569153}
   m_Layer: 5
-  m_Name: ShopItem
+  m_Name: ShopItemFootballer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -336,6 +337,23 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6090782638371569153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1797227851565171321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61a3c7e699e857647a5f6e1c5eadba64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _image: {fileID: 1594504030960330528}
+  _name: {fileID: 9165543303699819350}
+  _description: {fileID: 9093899175800728172}
+  _priceText: {fileID: 3167963134972977613}
+  _buyButton: {fileID: 7826117296872406796}
 --- !u!1 &3817755725826292914
 GameObject:
   m_ObjectHideFlags: 0
@@ -972,9 +990,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 5a052bc27301fdf41aef473464909b08, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1

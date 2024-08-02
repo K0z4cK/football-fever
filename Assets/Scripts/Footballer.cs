@@ -1,11 +1,19 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEditor;
 
 public enum StatType {Strength, Speed, Endurance, Accuracy, Teaming};
 
 public class Footballer
 {
+    private string _id;
+    public string Id => _id;
+
+    private Sprite _sprite;
+    public Sprite Sprite => _sprite;
+
     private string _name;
     public string Name => _name;
 
@@ -21,6 +29,13 @@ public class Footballer
 
     public Footballer()
     {
+        Builder();
+        //_rating = 1;
+    }
+
+    private void Builder()
+    {
+        _id = IdGenerator.NewId();
         _name = NamesCollection.GetRandomName();
 
         _stats = new FootballerStats()
@@ -32,12 +47,103 @@ public class Footballer
             teaming = 1
         };
         _points = 7;
-        //_rating = 1;
+    }
+
+    public Footballer(Footballer footballer)
+    {
+        _id = footballer.Id;
+        _name = footballer.Name;
+        _stats = footballer.Stats;
+        _points = footballer.Points;
+        _sprite = footballer.Sprite;
+    }
+
+    public Footballer(FootballerData data)
+    {
+        _id = data.id;
+        _name = data.name;
+        _stats = data.stats;
+        _points = data.points;
+        //_sprite = footballer.Sprite;
+    }
+
+    public Footballer(Sprite sprite)
+    {
+        Builder();
+
+        _sprite = sprite;
+    }
+
+    public Footballer(FootballerStats stats)
+    {
+        Builder();
+
+        _stats = stats;
+        _points = 0;
+    }
+
+    public Footballer(string name, FootballerStats stats)
+    {
+        Builder();
+
+        _name = name;
+
+        _stats = stats;
+        _points = 0;
+    }
+
+    public Footballer(string name, FootballerStats stats, Sprite sprite, int points)
+    {
+        Builder();
+
+        if (name == "")
+            name = NamesCollection.GetRandomName();
+
+        _name = name;
+
+        _stats = stats;
+
+        _sprite = sprite;
+        _points = points;
+    }
+
+    public Footballer(FootballerStats stats, Sprite sprite)
+    {
+        Builder();
+
+        _stats = stats;
+
+        _sprite = sprite;
+        _points = 0;
+    }
+
+    public void SetNewName(string name = "")
+    {
+        if(name == "")
+            _name = NamesCollection.GetRandomName();
+        else
+            _name = name;
+    }
+
+    public void SetNewId(string id = "")
+    {
+        if (id == "")
+            _id = IdGenerator.NewId();
+        else
+            _id = id;
+        
     }
 
     public void SetStatsRandom()
     {
-        Random rnd = new Random();
+        _stats = new FootballerStats()
+        {
+            strength = 1,
+            speed = 1,
+            endurance = 1,
+            accuracy = 1,
+            teaming = 1
+        };
 
         _points = 0;
         int randomPoints = 10;
@@ -47,7 +153,7 @@ public class Footballer
 
         foreach (var type in types)
         {
-            int nextPoints = rnd.Next(randomPoints + 1);
+            int nextPoints = RandomTools.Random.Next(randomPoints + 1);
             switch (type)
             {
                 case StatType.Strength:
@@ -152,8 +258,11 @@ public class Footballer
         return result * _stats.teaming;
     }
 
+    public bool IsStatsZero() => _stats.strength == 0 & _stats.speed == 0 & _stats.endurance == 0 & _stats.accuracy == 0 & _stats.teaming == 0;
+
 }
 
+[Serializable]
 public struct FootballerStats
 {
     public int strength;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -189,4 +190,14 @@ public class TeamPanel : MonoBehaviour
         _footballerCards.Remove(card);
         Destroy(card.gameObject);
     }
+}
+
+[Serializable]
+public struct FootballerData 
+{
+    public string id;
+    public string name;
+    public Sprite sprite;
+    public FootballerStats stats;
+    public int points;
 }

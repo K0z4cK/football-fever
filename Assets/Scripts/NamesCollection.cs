@@ -256,7 +256,7 @@ public static class NamesCollection
 
     public static string GetRandomName()
     {
-        int index = RandomTools.Random.Next(Names.Length + 1);
+        int index = RandomTools.Random.Next(Names.Length);
         return Names[index];
     }
 }

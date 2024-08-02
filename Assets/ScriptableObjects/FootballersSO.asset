@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bb28e4f91217c94882679dfb73a91a2, type: 3}
+  m_Name: FootballersSO
+  m_EditorClassIdentifier: 
+  footballerItems:
+  - id: base
+    name: 
+    sprite: {fileID: 21300000, guid: 823cc8d8a9fe7fd40918bee36360eb5f, type: 3}
+    stats:
+      strength: 1
+      speed: 1
+      endurance: 1
+      accuracy: 1
+      teaming: 1
+    points: 0
+    price: 50
+    isUnique: 0
+  - id: base_with_points
+    name: 
+    sprite: {fileID: 21300000, guid: 823cc8d8a9fe7fd40918bee36360eb5f, type: 3}
+    stats:
+      strength: 1
+      speed: 1
+      endurance: 1
+      accuracy: 1
+      teaming: 1
+    points: 7
+    price: 250
+    isUnique: 0
+  - id: random_points
+    name: 
+    sprite: {fileID: 21300000, guid: 823cc8d8a9fe7fd40918bee36360eb5f, type: 3}
+    stats:
+      strength: 0
+      speed: 0
+      endurance: 0
+      accuracy: 0
+      teaming: 0
+    points: 0
+    price: 150
+    isUnique: 0
+  - id: rare
+    name: Bombardeer
+    sprite: {fileID: 21300000, guid: 823cc8d8a9fe7fd40918bee36360eb5f, type: 3}
+    stats:
+      strength: 10
+      speed: 10
+      endurance: 10
+      accuracy: 10
+      teaming: 10
+    points: 0
+    price: 1000
+    isUnique: 1
