@@ -48,6 +48,16 @@ public class Settings : MonoBehaviour
 
         SetBackgroundCards();
         SetMusicCards();
+
+        _music.isOn = PlayerPrefs.GetInt("Music") == 1 ? true : false;
+        _sound.isOn = PlayerPrefs.GetInt("Sound") == 1 ? true : false;
+    }
+
+    public void ChangeVolume(string groupName)
+    {
+        Toggle toggle = groupName == "Music" ? _music : _sound;
+        PlayerPrefs.SetInt(groupName, toggle.isOn ? 1 : 0);
+        SoundManager.Instance.ChangeVolume(groupName);
     }
 
     private void SetBackgroundCards()
@@ -111,7 +121,15 @@ public class Settings : MonoBehaviour
 
     private void UpdateMusic(MusicCard item)
     {
-        //todo
+        _playerData.selectedMusic = item.Item.id;
+        SoundManager.Instance.ChangeMusic(item.Item.clip);
+        _selectedMusicCard = item;
+
+        foreach (var card in _musicCards)
+        {
+            if (card != _selectedMusicCard)
+                card.Deselect();
+        }
     }
 
     public void SetCoins(int coins)

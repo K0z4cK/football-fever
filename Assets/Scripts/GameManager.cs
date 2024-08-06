@@ -15,6 +15,9 @@ public class GameManager : MonoBehaviour
     private string jsonFilePath;
 
     [SerializeField]
+    private GameObject _loadingScreen;
+
+    [SerializeField]
     private BackgroundsSO _backgroundsSO;
     [SerializeField]
     private MusicsSO _musicSO;
@@ -30,6 +33,10 @@ public class GameManager : MonoBehaviour
     private Shop _shop;
     [SerializeField]
     private Settings _settings;
+    [SerializeField]
+    private Wheel _fortuneWheel;
+    [SerializeField]
+    private Tournament _tournament;
 
     [SerializeField]
     private int _startTeamCount = 4;
@@ -42,18 +49,34 @@ public class GameManager : MonoBehaviour
 
     private PlayerData _playerData = new PlayerData();
 
+    private DateTime _currentDate;
+
     private void Awake()
     {
         jsonFilePath = Application.persistentDataPath + JsonFileName;
-        _playerData.coins = 4444;
+        _currentDate = DateTime.UtcNow;
+        _playerData.coins = 0;
         /*SetNewTeam();
         AddRandomTeam(5);*/
         LoadPlayerData();
 
+        SoundManager.Instance.Init(_playerData, _music);
+
         _battle.Init(AddCoins, AddCoins, RemoveFootballers);
         _shop.Init(_playerData, PurchaseFootballer, PurchaseBackground, PurchaseMusic);
         _settings.Init(_playerData, _backgrounds, _music);
+        _fortuneWheel.Init(SetLastTime ,AddCoins, AddFootballer);
+        _tournament.Init(RemoveCoins, AddCoins, AddCoins, RemoveFootballers);
+
         SetCoins();
+
+        Invoke(nameof(HideLoadingScreen), 3f);
+    }
+
+    private void HideLoadingScreen()
+    { 
+        _loadingScreen.gameObject.SetActive(false);
+        SoundManager.Instance.PlayMusic();
     }
 
     private void SavePlayerData()
@@ -86,6 +109,19 @@ public class GameManager : MonoBehaviour
 
         _playerData = playerData;
 
+        if (_playerData.lastPlayWheelOfFortune != null)
+        {
+            DateTime dateTimeUpdate = _playerData.lastPlayWheelOfFortune;
+            dateTimeUpdate = dateTimeUpdate.AddHours(24);
+
+            if (_currentDate >= dateTimeUpdate)
+                _fortuneWheel.SetSpinAbility(true);
+            else
+                _fortuneWheel.SetSpinAbility(false);
+
+            StartCoroutine(RealtimeTimer());
+        }
+
         _backgrounds.AddRange(_backgroundsSO.backgroundItems.FindAll(x => _playerData.backgrounds.Contains(x.id)));
         _music.AddRange(_musicSO.musicItems.FindAll(x => _playerData.music.Contains(x.id)));
 
@@ -108,15 +144,51 @@ public class GameManager : MonoBehaviour
         _playerData.selectedBackground = "base";
         _playerData.selectedMusic = "base";
 
+        _fortuneWheel.SetSpinAbility(true);
+
+        if (!PlayerPrefs.HasKey("Sound"))
+            PlayerPrefs.SetInt("Sound", 0);
+        if (!PlayerPrefs.HasKey("Music"))
+            PlayerPrefs.SetInt("Music", 0);
+
         //_backgrounds.AddRange(_backgroundsSO.backgroundItems.FindAll(x => _playerData.backgrounds.Contains(x.id)));
         //_music.AddRange(_musicSO.musicItems.FindAll(x => _playerData.music.Contains(x.id)));
 
         SetNewTeam();
     }
 
+    private void AddFootballer(FootballerItem footballerItem)
+    {
+        Footballer footballer = new Footballer();
+        footballer = new Footballer(footballerItem.name, footballerItem.stats, footballerItem.sprite, footballerItem.points);
+
+        if (footballer.IsStatsZero())
+            footballer.SetStatsRandom();
+        
+        _teamPanel.AddFootballer(footballer);
+
+        FootballerData data = new FootballerData()
+        {
+            id = footballer.Id,
+            name = footballer.Name,
+            stats = footballer.Stats,
+            points = footballer.Points,
+            sprite = footballer.Sprite
+        };
+
+        _playerData.footballers.Add(data);
+    }
+
     private void AddCoins(int coins)
     {
         _playerData.coins += coins;
+        SetCoins();
+        SoundManager.Instance.MakeSound(SoundType.Coins);
+    }
+
+    private void RemoveCoins(int coins)
+    {
+        _playerData.coins -= coins;
         SetCoins();
     }
 
@@ -263,6 +335,29 @@ public class GameManager : MonoBehaviour
         SavePlayerData();
     }
 
+    private void SetLastTime()
+    {
+        _playerData.lastPlayWheelOfFortune = DateTime.Now;
+        StartCoroutine(RealtimeTimer());
+    }
+
+    private IEnumerator RealtimeTimer()
+    {
+        DateTime dateTimeUpdate = _playerData.lastPlayWheelOfFortune;
+        dateTimeUpdate = dateTimeUpdate.AddHours(24);
+
+        var awaiter = new WaitForSeconds(1f);
+        while (_currentDate < dateTimeUpdate)
+        {
+            yield return awaiter;
+            _currentDate = DateTime.UtcNow;
+
+            _fortuneWheel.SetTimer(dateTimeUpdate - DateTime.Now);
+
+            if (_currentDate >= dateTimeUpdate)
+                _fortuneWheel.SetSpinAbility(true);
+        }
+    }
 }
 
 [Serializable]
@@ -275,4 +370,24 @@ public class PlayerData
     public List<string> music = new List<string>();
     public string selectedBackground;
     public string selectedMusic;
+    public JsonDateTime lastPlayWheelOfFortune;
+
+}
+
+[Serializable]
+public class JsonDateTime
+{
+    public long value;
+    public static implicit operator DateTime(JsonDateTime jdt)
+    {
+        Debug.Log("Converted to time");
+        return DateTime.FromFileTimeUtc(jdt.value);
+    }
+    public static implicit operator JsonDateTime(DateTime dt)
+    {
+        Debug.Log("Converted to JDT");
+        JsonDateTime jdt = new JsonDateTime();
+        jdt.value = dt.ToFileTimeUtc();
+        return jdt;
+    }
 }

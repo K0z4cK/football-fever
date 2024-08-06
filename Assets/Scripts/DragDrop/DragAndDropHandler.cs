@@ -55,7 +55,7 @@ public class DragAndDropHandler : MonoBehaviour, IPointerDownHandler, IPointerUp
         yield return new WaitForSeconds(timeToWait);
         draggingSlot = true;
 
-        offset = transform.position - Input.mousePosition;
+        offset = transform.position - Camera.main.ScreenToWorldPoint( Input.mousePosition);
         OnGrabbedObject?.Invoke();
     }
 
@@ -68,7 +68,7 @@ public class DragAndDropHandler : MonoBehaviour, IPointerDownHandler, IPointerUp
     {
         if (draggingSlot)
         {
-            transform.position = Input.mousePosition + offset;
+            transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition) + offset;
         }
         else
         {

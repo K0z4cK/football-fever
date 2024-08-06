@@ -14,22 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   backgroundItems:
   - id: base
-    sprite: {fileID: 21300000, guid: 4bae33ff9aca66e42a26eed45c710976, type: 3}
+    sprite: {fileID: 21300000, guid: 0c4006c7d5a344243b190afcc8ffb3ec, type: 3}
     name: 
     description: 
     price: 0
   - id: 0
+    sprite: {fileID: 21300000, guid: 4bae33ff9aca66e42a26eed45c710976, type: 3}
+    name: Classic Field
+    description: It's more football than basic
+    price: 500
+  - id: 1
     sprite: {fileID: 21300000, guid: 3daccdfd14047ed40a2333cd1d490468, type: 3}
     name: Realistic Field
     description: Just like picture from air
-    price: 500
-  - id: 1
+    price: 1000
+  - id: 2
     sprite: {fileID: 21300000, guid: 046d4c1219b41a34ca64badfcf0f3adf, type: 3}
     name: Cool Field
     description: Cooler than basic
-    price: 1000
-  - id: 2
+    price: 2000
+  - id: 3
     sprite: {fileID: 21300000, guid: 3b686cefa3a948c469a52babb5f2593b, type: 3}
     name: Chess Field
     description: You can play chess while playing football
-    price: 1000
+    price: 5000
