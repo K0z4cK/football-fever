@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public enum GameState {None, Menu, Game, Team }
 
@@ -37,6 +37,8 @@ public class GameManager : MonoBehaviour
     private Wheel _fortuneWheel;
     [SerializeField]
     private Tournament _tournament;
+    [SerializeField]
+    private Button _tournamentBtn;
 
     [SerializeField]
     private int _startTeamCount = 4;
@@ -54,14 +56,14 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         jsonFilePath = Application.persistentDataPath + JsonFileName;
-        _currentDate = DateTime.UtcNow;
+        _currentDate = DateTime.Now;
         _playerData.coins = 0;
         /*SetNewTeam();
         AddRandomTeam(5);*/
         LoadPlayerData();
 
         SoundManager.Instance.Init(_playerData, _music);
-
+        _tournamentBtn.interactable = false;
         _battle.Init(AddCoins, AddCoins, RemoveFootballers);
         _shop.Init(_playerData, PurchaseFootballer, PurchaseBackground, PurchaseMusic);
         _settings.Init(_playerData, _backgrounds, _music);
@@ -69,6 +71,7 @@ public class GameManager : MonoBehaviour
         _tournament.Init(RemoveCoins, AddCoins, AddCoins, RemoveFootballers);
 
         SetCoins();
+        CheckTeamCount();
 
         Invoke(nameof(HideLoadingScreen), 3f);
     }
@@ -177,6 +180,7 @@ public class GameManager : MonoBehaviour
         };
 
         _playerData.footballers.Add(data);
+        CheckTeamCount();
     }
 
     private void AddCoins(int coins)
@@ -198,6 +202,7 @@ public class GameManager : MonoBehaviour
             _playerData.footballers.Remove(_playerData.footballers.Find(x=> x.id == footballer.Id));
         
         _teamPanel.RemoveFootballers(footballers);
+        CheckTeamCount();
     }
 
     private void SetNewTeam()
@@ -281,6 +286,7 @@ public class GameManager : MonoBehaviour
             if (footballer.IsUnique)
                 Destroy(footballer.gameObject);
             footballer.Refresh();
+            CheckTeamCount();
         }
     }
 
@@ -350,7 +356,7 @@ public class GameManager : MonoBehaviour
         while (_currentDate < dateTimeUpdate)
         {
             yield return awaiter;
-            _currentDate = DateTime.UtcNow;
+            _currentDate = DateTime.Now;
 
             _fortuneWheel.SetTimer(dateTimeUpdate - DateTime.Now);
 
@@ -358,6 +364,20 @@ public class GameManager : MonoBehaviour
                 _fortuneWheel.SetSpinAbility(true);
         }
     }
+
+    private void CheckTeamCount()
+    {
+        if(_playerData.footballers.Count >= 8)
+            _tournamentBtn.interactable = true;
+        else
+            _tournamentBtn.interactable = false;
+    }
+
+    /*private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.W))
+            AddCoins(500);
+    }*/
 }
 
 [Serializable]

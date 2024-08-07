@@ -158,7 +158,7 @@ public class CardBattle : MonoBehaviour
     {
         List<Transform> targets = new List<Transform>();
         _battleCards.ForEach(x => targets.Add(x.transform));
-        _teamPanel.SetDragTargets(targets, 100f);
+        _teamPanel.SetDragTargets(targets, 1f);
     }
 
     private void OnClearClick(UnityAction action)

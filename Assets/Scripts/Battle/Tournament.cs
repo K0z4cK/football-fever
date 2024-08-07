@@ -115,7 +115,7 @@ public class Tournament : MonoBehaviour
         _clear.gameObject.SetActive(false);
         _play.interactable = false;
 
-        _teamPanel.SetDragTargets(new List<Transform>() { _footballersPool }, 1000f);
+        _teamPanel.SetDragTargets(new List<Transform>() { _footballersPool }, 5f);
 
         StartCoroutine(PoolCoroutine());
     }
@@ -363,7 +363,7 @@ public class Tournament : MonoBehaviour
     {
         List<Transform> targets = new List<Transform>();
         _cards.ForEach(x => targets.Add(x.transform));
-        _teamPanel.SetDragTargets(targets, 500f);
+        _teamPanel.SetDragTargets(targets, 0.5f);
     }
 
     private void OnClearClick(UnityAction action, bool isNet)
